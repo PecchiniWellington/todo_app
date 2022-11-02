@@ -30,7 +30,7 @@ class User(Base):
 class Vote(Base):
     __tablename__ = 'votes'
     id = Column(Integer, primary_key=True, nullable=False)
-    posts_id = Column(Integer, ForeignKey(
+    post_id = Column(Integer, ForeignKey(
         'posts.id', ondelete="CASCADE"), nullable=False)
-    users_id = Column(Integer, ForeignKey(
+    user_id = Column(Integer, ForeignKey(
         'users.id', ondelete="CASCADE"), nullable=False)
