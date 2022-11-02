@@ -18,8 +18,8 @@ def get_post(db: Session = Depends(get_db), current_user: int = Depends(oauth2.g
     posts = db.query(models.Post).filter(
         models.Post.title.contains(search)).limit(limit).offset(skip).all()
 
-    results = db.query(models.Post, func.count(models.Vote.post_id).label('votes')).join(
-        models.Post, models.Post.id == models.Vote.post_id, isouter=True).group_by(models.Post.id).filter(
+    results = db.query(models.Post, func.count(models.Vote.posts_id).label('votes')).join(
+        models.Post, models.Post.id == models.Vote.posts_id, isouter=True).group_by(models.Post.id).filter(
         models.Post.title.contains(search)).limit(limit).offset(skip).all()
 
     return results
@@ -30,8 +30,8 @@ def get_post(db: Session = Depends(get_db), current_user: int = Depends(oauth2.g
 
 @router.get("/{id}", response_model=schemas.PostOut)
 def get_post_detail(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    post_detail = db.query(models.Post, func.count(models.Vote.post_id).label('votes')).join(
-        models.Post, models.Post.id == models.Vote.post_id, isouter=True).group_by(models.Post.id).filter(models.Post.id == id).first()
+    post_detail = db.query(models.Post, func.count(models.Vote.posts_id).label('votes')).join(
+        models.Post, models.Post.id == models.Vote.posts_id, isouter=True).group_by(models.Post.id).filter(models.Post.id == id).first()
 
     if not post_detail:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
