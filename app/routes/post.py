@@ -22,7 +22,7 @@ def get_post(db: Session = Depends(get_db), current_user: int = Depends(oauth2.g
         models.Post, models.Post.id == models.Vote.posts_id, isouter=True).group_by(models.Post.id).filter(
         models.Post.title.contains(search)).limit(limit).offset(skip).all()
 
-    return posts
+    return results
 
 
 """ Post Detail """
@@ -58,7 +58,7 @@ def create_post(post: schemas.PostCreate, db: Session = Depends(get_db), current
 """ Post Delete """
 
 
-@ router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     post = db.query(models.Post).filter(
         models.Post.id == id).first()
