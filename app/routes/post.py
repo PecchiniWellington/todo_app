@@ -22,7 +22,7 @@ def get_post(db: Session = Depends(get_db), current_user: int = Depends(oauth2.g
         models.Post, models.Post.id == models.Vote.posts_id, isouter=True).group_by(models.Post.id).filter(
         models.Post.title.contains(search)).limit(limit).offset(skip).all()
 
-    return results
+    return posts
 
 
 """ Post Detail """
